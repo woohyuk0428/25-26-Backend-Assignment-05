@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TokenDto {
-    @SerializedName("accessToken")
+    @SerializedName("access_token")
     private String accessToken;
 
-    @SerializedName("refreshToken")
+    @SerializedName("refresh_token")
     private String refreshToken;
 
     @Builder
