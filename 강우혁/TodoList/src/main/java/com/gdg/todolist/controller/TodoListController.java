@@ -1,10 +1,9 @@
 package com.gdg.todolist.controller;
 
-import com.gdg.todolist.dto.LocalUserInfoDto;
-import com.gdg.todolist.dto.LocalUserSignUpDto;
 import com.gdg.todolist.dto.TodoListInfoResponseDto;
 import com.gdg.todolist.dto.TodoListSaveRequestDto;
 import com.gdg.todolist.service.TodoListService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +25,7 @@ public class TodoListController {
 
     private final TodoListService todoListService;
 
+    @Operation(summary = "Todo 생성", description = "사용자의 Todo를 생성합니다.")
     @PostMapping("/create/{id}")
     public ResponseEntity<TodoListInfoResponseDto> createTodo(
             @PathVariable Long id,

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/local")
+@RequestMapping("/auth")
 public class LoginController {
     private final LoginService loginService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(loginService.login(loginRequest));
     }
