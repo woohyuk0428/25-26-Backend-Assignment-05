@@ -48,15 +48,15 @@ public class LocalSignUpController {
 
     @Operation(summary = "관리자 전용 회원 조회", description = "유저 아이디를 확인하여 조회")
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/userInfo/{id}")
-    public ResponseEntity<UserInfoResponseDto> getUserInfo(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.getUserInfo(id));
+    @GetMapping("/userInfo/{userId}")
+    public ResponseEntity<UserInfoResponseDto> getUserInfo(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.getUserInfo(userId));
     }
 
     @Operation(summary = "회원정보 수정", description = "유저의 정보 수정")
-    @PatchMapping("/update/{id}")
-    public ResponseEntity<UserInfoResponseDto> updateUserInfo(@PathVariable Long id, @RequestBody LocalSignupRequestDto localSignupRequestDto) {
-        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.update(id,localSignupRequestDto));
+    @PatchMapping("/update/{userId}")
+    public ResponseEntity<UserInfoResponseDto> updateUserInfo(@PathVariable Long userId, @RequestBody LocalSignupRequestDto localSignupRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.update(userId,localSignupRequestDto));
     }
 
     @Operation(summary = "회원 삭제", description = "유저 정보를 삭제")
