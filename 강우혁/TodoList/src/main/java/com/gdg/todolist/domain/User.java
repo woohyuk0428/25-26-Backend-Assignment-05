@@ -51,6 +51,12 @@ public class User {
     @Column(name = "USER_PROVIDER_ID")
     private String providerId;
 
+    @Column(name = "USER_ACCESSTOKEN")
+    private String accessToken;
+
+    @Column(name = "USER_REFRESHTOKEN")
+    private String refreshToken;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TodoList> todos = new ArrayList<>();
 
@@ -74,5 +80,10 @@ public class User {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void saveToken(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }
