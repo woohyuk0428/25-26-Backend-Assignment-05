@@ -1,6 +1,5 @@
 package com.gdg.todolist.jwt;
 
-import com.gdg.todolist.domain.LocalUser;
 import com.gdg.todolist.domain.User;
 import com.gdg.todolist.dto.TokenDto;
 import io.jsonwebtoken.Claims;
@@ -68,27 +67,6 @@ public class TokenProvider {
                 .refreshToken(refreshToken)
                 .build();
     }
-
-    public String createAccessToken(LocalUser user) {
-        return buildToken(user, accessTokenValidityTime);
-    }
-
-    public String createRefreshToken(LocalUser user) {
-        return buildToken(user, refreshTokenValidityTime);
-    }
-
-    private String buildToken(LocalUser user, long validityTime) {
-        long now = new Date().getTime();
-        Date expiry = new Date(now + validityTime);
-
-        return Jwts.builder()
-                .setSubject(user.getId().toString())
-                .claim("auth", user.getRole().name())
-                .setExpiration(expiry)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
-
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);

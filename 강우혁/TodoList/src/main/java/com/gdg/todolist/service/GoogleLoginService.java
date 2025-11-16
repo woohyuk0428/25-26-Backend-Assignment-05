@@ -86,8 +86,8 @@ public class GoogleLoginService {
 
         TokenDto token =  tokenProvider.createToken(user);
 
-        user.saveAccessToken(token.getAccessToken());
-        user.saveRefreshToken(token.getRefreshToken());
+        //user.saveAccessToken(token.getAccessToken());
+        //user.saveRefreshToken(token.getRefreshToken());
 
         userRepository.save(user);
         return token;

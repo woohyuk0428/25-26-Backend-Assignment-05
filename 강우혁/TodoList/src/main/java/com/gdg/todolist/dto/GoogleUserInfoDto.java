@@ -41,11 +41,4 @@ public class GoogleUserInfoDto {
         this.locale = locale;
     }
 
-    public static GoogleUserInfoDto from(User user) {
-        return GoogleUserInfoDto.builder()
-                .id(user.getId().toString())
-                .email(user.getEmail())
-                .name(user.getName())
-                .build();
-    }
 }

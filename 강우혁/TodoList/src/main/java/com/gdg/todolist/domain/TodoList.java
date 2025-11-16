@@ -28,17 +28,12 @@ public class TodoList {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "local_user_id")
-    private LocalUser localUser;
-
     @Builder
-    public TodoList(String title, String description, Long status, User user, LocalUser localUser) {
+    public TodoList(String title, String description, Long status, User user) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.user = user;
-        this.localUser = localUser;
     }
 
     public void update(String title, String description, Long status, User user) {
