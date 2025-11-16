@@ -71,7 +71,11 @@ public class LocalAuthService {
     public UserInfoResponseDto update(Long id, LocalSignupRequestDto localSignupRequestDto) {
         User user = findUser(id);
 
-        user.changePassword(passwordEncoder.encode(localSignupRequestDto.getPassword()));
+        user.updateInfo(
+                localSignupRequestDto.getName() == null ? user.getName() : localSignupRequestDto.getName(),
+                localSignupRequestDto.getEmail() == null ? user.getEmail() : localSignupRequestDto.getEmail(),
+                localSignupRequestDto.getPassword() == null ? user.getPassword() : passwordEncoder.encode(localSignupRequestDto.getPassword())
+        );
 
         return UserInfoResponseDto.from(user);
     }

@@ -78,7 +78,9 @@ public class User {
         this.providerId = providerId;
     }
 
-    public void changePassword(String password) {
+    public void updateInfo(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
         this.password = password;
     }
 
