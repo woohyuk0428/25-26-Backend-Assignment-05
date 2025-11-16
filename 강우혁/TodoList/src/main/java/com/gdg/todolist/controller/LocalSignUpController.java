@@ -54,9 +54,15 @@ public class LocalSignUpController {
     }
 
     @Operation(summary = "회원정보 수정", description = "유저의 정보 수정")
-    @PatchMapping("/update/{userId}")
+    @PatchMapping("/update")
     public ResponseEntity<UserInfoResponseDto> updateUserInfo(Principal principal, @RequestBody LocalSignupRequestDto localSignupRequestDto) {
         return ResponseEntity.status(HttpStatus.OK).body(localAuthService.update(principal, localSignupRequestDto));
+    }
+
+    @Operation(summary = "관리자 전용 회원정보 수정", description = "관리자만 접근 가능")
+    @PatchMapping("/update/{userId}")
+    public ResponseEntity<UserInfoResponseDto> adminUpdateUserInfo(@PathVariable Long userId, @RequestBody LocalSignupRequestDto localSignupRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.adminUpdate(userId, localSignupRequestDto));
     }
 
     @Operation(summary = "회원 삭제", description = "유저 정보를 삭제")
@@ -65,4 +71,12 @@ public class LocalSignUpController {
         localAuthService.deleteUser(principal);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @Operation(summary = "관리자 전용 회원 삭제", description = "유저 정보를 삭제")
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<TokenDto> adminDeleteUser(@PathVariable Long userId) {
+        localAuthService.deleteUserById(userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
