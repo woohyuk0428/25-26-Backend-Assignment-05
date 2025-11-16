@@ -41,6 +41,8 @@ public class SecurityConfig {
                                 ,"/", "/index.html","oauth/**"
                                 ,"/error", "favicon.ico"
                                 ,"/static/**", "/assets/**"
+                                ,"/swagger-ui/**"
+                                ,"/v3/**"
                         ).permitAll()
                         .requestMatchers("/todo/**").authenticated()
                         .anyRequest().authenticated()
