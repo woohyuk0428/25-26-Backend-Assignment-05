@@ -66,7 +66,12 @@ public class TodoListService {
         TodoList todoList = todoListRepository.findById(todoId)
                 .orElseThrow(() -> new TodoNotFoundException("해당 Todo가 존재하지 않습니다."));
 
-        todoList.update(dto.getTitle(), dto.getDescription(), dto.getStatus(), todoList.getUser());
+        todoList.update(
+                dto.getTitle() == null ? todoList.getTitle() : dto.getTitle(),
+                dto.getDescription() == null ? todoList.getDescription() : dto.getDescription(),
+                dto.getStatus() ==  null ? todoList.getStatus() : dto.getStatus(),
+                todoList.getUser()
+        );
 
         return TodoListInfoResponseDto.from(todoList);
     }
