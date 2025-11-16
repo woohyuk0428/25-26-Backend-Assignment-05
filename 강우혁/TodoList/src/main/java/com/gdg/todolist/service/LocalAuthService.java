@@ -1,14 +1,14 @@
 package com.gdg.todolist.service;
 
-import com.gdg.todolist.domain.LocalUser;
 import com.gdg.todolist.domain.Provider;
 import com.gdg.todolist.domain.Role;
-import com.gdg.todolist.dto.LocalUserInfoDto;
-import com.gdg.todolist.dto.TokenDto;
+import com.gdg.todolist.domain.User;
 import com.gdg.todolist.dto.LocalSignupRequestDto;
+import com.gdg.todolist.dto.TokenDto;
+import com.gdg.todolist.dto.UserInfoResponseDto;
 import com.gdg.todolist.exception.UserNotFoundException;
 import com.gdg.todolist.jwt.TokenProvider;
-import com.gdg.todolist.repository.LocalUserRepository;
+import com.gdg.todolist.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,91 +20,65 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class LocalAuthService {
 
-    private final LocalUserRepository localUserRepository;
+    private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public TokenDto adminSignUp(LocalSignupRequestDto localSignupRequestDto) {
-        LocalUser localUser = localUserRepository.save(LocalUser.builder()
+    public TokenDto adminSingUp(LocalSignupRequestDto localSignupRequestDto) {
+        User user = userRepository.save(User.builder()
                 .name(localSignupRequestDto.getName())
                 .email(localSignupRequestDto.getEmail())
                 .password(passwordEncoder.encode(localSignupRequestDto.getPassword()))
+                .provider(Provider.LOCAL)
                 .role(Role.ROLE_ADMIN)
-                .provider(Provider.LOCAL)
                 .build()
         );
 
-        String accessToken = tokenProvider.createAccessToken(localUser);
-        String refreshToken = tokenProvider.createRefreshToken(localUser);
-
-        localUser.saveAccessToken(accessToken);
-        localUser.saveRefreshToken(refreshToken);
-
-        return TokenDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+        return tokenProvider.createToken(user);
     }
 
-    @Transactional
     public TokenDto userSignUp(LocalSignupRequestDto localSignupRequestDto) {
-        LocalUser localUser = localUserRepository.save(LocalUser.builder()
+        User user = userRepository.save(User.builder()
                 .name(localSignupRequestDto.getName())
                 .email(localSignupRequestDto.getEmail())
                 .password(passwordEncoder.encode(localSignupRequestDto.getPassword()))
-                .role(Role.ROLE_USER)
                 .provider(Provider.LOCAL)
+                .role(Role.ROLE_USER)
                 .build()
         );
 
-        String accessToken = tokenProvider.createAccessToken(localUser);
-        String refreshToken = tokenProvider.createRefreshToken(localUser);
-
-        localUser.saveAccessToken(accessToken);
-        localUser.saveRefreshToken(refreshToken);
-
-        return TokenDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+        return tokenProvider.createToken(user);
     }
 
     @Transactional(readOnly = true)
-    public LocalUserInfoDto getMyInfo(Principal principal){
-        LocalUser user = entityUserId(Long.parseLong(principal.getName()));
-
-        return LocalUserInfoDto.from(user);
+    public UserInfoResponseDto getMyInfo(Principal principal) {
+        User user = findUser(Long.parseLong(principal.getName()));
+        return UserInfoResponseDto.from(user);
     }
 
     @Transactional(readOnly = true)
-    public LocalUserInfoDto getUserInfo(Long id){
-        LocalUser user = entityUserId(id);
-
-        return LocalUserInfoDto.from(user);
+    public UserInfoResponseDto getUserInfo(Long id) {
+        User user = findUser(id);
+        return UserInfoResponseDto.from(user);
     }
 
     @Transactional
-    public LocalUserInfoDto update(Long id, LocalSignupRequestDto localSignupRequestDto) {
-        LocalUser localUser = entityUserId(id);
+    public UserInfoResponseDto update(Long id, LocalSignupRequestDto localSignupRequestDto) {
+        User user = findUser(id);
 
-        localUser.updateInfo(
-                localSignupRequestDto.getName(),
-                localSignupRequestDto.getEmail(),
-                localSignupRequestDto.getPassword()
-        );
+        user.changePassword(passwordEncoder.encode(localSignupRequestDto.getPassword()));
 
-        localUserRepository.save(localUser);
-        return LocalUserInfoDto.from(localUser);
+        return UserInfoResponseDto.from(user);
     }
 
     @Transactional
-    public void deleteUser(Principal principal){
-        localUserRepository.deleteById(Long.parseLong(principal.getName()));
+    public void deleteUser(Principal principal) {
+        userRepository.deleteById(Long.parseLong(principal.getName()));
     }
 
-    private LocalUser entityUserId(Long id) {
-        return localUserRepository.findById(id)
+    private User findUser(Long id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("사용자가 없습니다."));
     }
 }
