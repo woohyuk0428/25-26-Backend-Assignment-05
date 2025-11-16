@@ -3,7 +3,6 @@ package com.gdg.todolist.dto;
 import com.gdg.todolist.domain.LocalUser;
 import com.gdg.todolist.domain.Provider;
 import com.gdg.todolist.domain.Role;
-import com.gdg.todolist.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

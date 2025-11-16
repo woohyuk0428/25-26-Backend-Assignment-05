@@ -6,7 +6,6 @@ import com.gdg.todolist.dto.TokenDto;
 import com.gdg.todolist.exception.UserNotFoundException;
 import com.gdg.todolist.jwt.TokenProvider;
 import com.gdg.todolist.repository.LocalUserRepository;
-import com.gdg.todolist.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
