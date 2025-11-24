@@ -27,33 +27,12 @@ public class LocalAuthService {
 
     @Transactional
     public TokenDto adminSingUp(LocalSignupRequestDto localSignupRequestDto) {
-        User user = userRepository.save(User.builder()
-                .name(localSignupRequestDto.getName())
-                .email(localSignupRequestDto.getEmail())
-                .password(passwordEncoder.encode(localSignupRequestDto.getPassword()))
-                .provider(Provider.LOCAL)
-                .role(Role.ROLE_ADMIN)
-                .providerId(null)
-                .pictureUrl(null)
-                .build()
-        );
-
-        return tokenProvider.createToken(user);
+        return signUp(localSignupRequestDto, Role.ADMIN);
     }
 
+    @Transactional
     public TokenDto userSignUp(LocalSignupRequestDto localSignupRequestDto) {
-        User user = userRepository.save(User.builder()
-                .name(localSignupRequestDto.getName())
-                .email(localSignupRequestDto.getEmail())
-                .password(passwordEncoder.encode(localSignupRequestDto.getPassword()))
-                .provider(Provider.LOCAL)
-                .role(Role.ROLE_USER)
-                .providerId(null)
-                .pictureUrl(null)
-                .build()
-        );
-
-        return tokenProvider.createToken(user);
+        return signUp(localSignupRequestDto, Role.USER);
     }
 
     @Transactional(readOnly = true)
@@ -110,5 +89,20 @@ public class LocalAuthService {
     private User findUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("사용자가 없습니다."));
+    }
+
+    private TokenDto signUp(LocalSignupRequestDto localSignupRequestDto, Role role) {
+        User user = userRepository.save(User.builder()
+                .name(localSignupRequestDto.getName())
+                .email(localSignupRequestDto.getEmail())
+                .password(passwordEncoder.encode(localSignupRequestDto.getPassword()))
+                .provider(Provider.LOCAL)
+                .role(role)
+                .providerId(null)
+                .pictureUrl(null)
+                .build()
+        );
+
+        return tokenProvider.createToken(user);
     }
 }
