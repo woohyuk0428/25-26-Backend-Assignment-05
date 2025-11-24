@@ -91,7 +91,7 @@ public class GoogleLoginService {
 
     private GoogleUserInfoDto getUserInfo(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://www.googleapis.com/oauth2/v3/userinfo";
+        final String url = "https://www.googleapis.com/oauth2/v3/userinfo";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
