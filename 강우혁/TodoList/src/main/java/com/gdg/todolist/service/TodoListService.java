@@ -53,7 +53,6 @@ public class TodoListService {
                 .toList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     public List<TodoListInfoResponseDto> getTodoAllLists() {
         return todoListRepository.findAll().stream()

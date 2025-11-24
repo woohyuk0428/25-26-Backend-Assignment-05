@@ -43,7 +43,12 @@ public class SecurityConfig {
                                 ,"/static/**", "/assets/**"
                                 ,"/swagger-ui/**"
                                 ,"/v3/**"
+                                ,"/userinfo/*"
                         ).permitAll()
+                        .requestMatchers("/api/auth/delete/**"
+                                ,"userinfo/user/**"
+                                ,"/todo/admin"
+                                ).hasRole("ADMIN")
                         .requestMatchers("/todo/**").authenticated()
                         .anyRequest().authenticated()
                 )

@@ -41,7 +41,6 @@ public class LocalAuthService {
         return UserInfoResponseDto.from(user);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     public UserInfoResponseDto getUserInfo(Long id) {
         User user = findUser(id);
@@ -80,9 +79,8 @@ public class LocalAuthService {
         userRepository.deleteById(Long.parseLong(principal.getName()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void deleteUserById(Long id) {
+    public void adminUserDeleteById(Long id) {
         userRepository.deleteById(id);
     }
 

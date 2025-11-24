@@ -31,7 +31,6 @@ public class UserInfoController {
     }
 
     @Operation(summary = "관리자 전용 회원 조회", description = "유저 아이디를 확인하여 조회")
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<UserInfoResponseDto> getUserInfo(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(localAuthService.getUserInfo(userId));

@@ -40,25 +40,6 @@ public class LocalSignUpController {
         return ResponseEntity.status(HttpStatus.CREATED).body(localAuthService.userSignUp(localSignupRequestDto));
     }
 
-    @Operation(summary = "나의 정보 조회", description = "내 정보를 보여주는 페이지")
-    @GetMapping("/getInfo")
-    public ResponseEntity<UserInfoResponseDto> getInfo(Principal principal) {
-        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.getMyInfo(principal));
-    }
-
-    @Operation(summary = "관리자 전용 회원 조회", description = "유저 아이디를 확인하여 조회")
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/userInfo/{userId}")
-    public ResponseEntity<UserInfoResponseDto> getUserInfo(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.getUserInfo(userId));
-    }
-
-    @Operation(summary = "회원정보 수정", description = "유저의 정보 수정")
-    @PatchMapping("/update")
-    public ResponseEntity<UserInfoResponseDto> updateUserInfo(Principal principal, @RequestBody LocalSignupRequestDto localSignupRequestDto) {
-        return ResponseEntity.status(HttpStatus.OK).body(localAuthService.update(principal, localSignupRequestDto));
-    }
-
     @Operation(summary = "관리자 전용 회원정보 수정", description = "관리자만 접근 가능")
     @PatchMapping("/update/{userId}")
     public ResponseEntity<UserInfoResponseDto> adminUpdateUserInfo(@PathVariable Long userId, @RequestBody LocalSignupRequestDto localSignupRequestDto) {
@@ -75,7 +56,7 @@ public class LocalSignUpController {
     @Operation(summary = "관리자 전용 회원 삭제", description = "유저 정보를 삭제")
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<TokenDto> adminDeleteUser(@PathVariable Long userId) {
-        localAuthService.deleteUserById(userId);
+        localAuthService.adminUserDeleteById(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

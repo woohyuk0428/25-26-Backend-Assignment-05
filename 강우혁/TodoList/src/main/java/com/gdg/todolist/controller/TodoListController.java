@@ -62,4 +62,10 @@ public class TodoListController {
         todoListService.deleteTodoList(todoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @Operation(summary = "관리자 전용 todolist 전체 조회", description = "모든 사용자의 todolist를 조회")
+    @GetMapping("/admin")
+    public ResponseEntity<List<TodoListInfoResponseDto>> getAllTodoList() {
+        return ResponseEntity.status(HttpStatus.OK).body(todoListService.getTodoAllLists());
+    }
 }
