@@ -35,7 +35,7 @@ public class GoogleLoginService {
     private String GOOGLE_CLIENT_ID;
     @Value("${jwt.google-client-pw}")
     private String GOOGLE_CLIENT_PW;
-    private final String GOOGLE_REDIRECT_URI = "http://localhost:8080/api/oauth2/callback/google";
+    private final String GOOGLE_REDIRECT_URI = "http://whkang04.duckdns.org:8080/api/oauth2/callback/google";
 
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
@@ -79,7 +79,7 @@ public class GoogleLoginService {
                         .email(googleUserInfoDto.getEmail())
                         .name(googleUserInfoDto.getName())
                         .pictureUrl(googleUserInfoDto.getPictureUrl())
-                        .role(Role.ROLE_USER)
+                        .role(Role.USER)
                         .provider(Provider.GOOGLE)
                         .build()
                 ));
